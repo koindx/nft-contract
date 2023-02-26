@@ -224,7 +224,7 @@ export class Collections {
         isTokenApproved = Arrays.equal(approvedAddress, caller.caller);
       }
       if(!isTokenApproved) {
-        const operatorApproval = this._state.getApprovedOperator(token.owner, caller.caller);
+        const operatorApproval = this._state.getApprovedOperator(token!.owner, caller.caller);
         if(operatorApproval) {
           isTokenApproved = operatorApproval.approved;
         }
@@ -238,7 +238,7 @@ export class Collections {
     this._state.removeApproved(token_id);
 
     // update the owner token
-    token.owner = to;
+    token!.owner = to;
 
     // update the current owner's balance
     const balance_from = this._state.getBalance(from);
@@ -260,7 +260,7 @@ export class Collections {
     gallery_to.tokens.push(token_id)
 
     // save new states
-    this._state.saveToken(token_id, token);
+    this._state.saveToken(token_id, token!);
     this._state.saveBalance(to, balance_to);
     this._state.saveBalance(from, balance_from);
     this._state.saveGallery(to, gallery_to);
