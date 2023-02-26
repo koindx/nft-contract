@@ -209,15 +209,10 @@ export class Collections {
 
     // process
     let token = this._state.getToken(token_id);
-    if (!token) {
-      System.log("nonexistent token");
-      return res;
-    }
-
-    if(!Arrays.equal(token.owner, from)) {
-      System.log("from is not a owner");
-      return res;
-    }
+    // check if the token exists
+    System.require(token != null, "nonexistent token", error.error_code.failure);
+    // check if owner if from
+    System.require(Arrays.equal(token!.owner, from), "from is not a owner", error.error_code.authorization_failure)
 
     // check authorize tokens
     let isTokenApproved: bool = false;
@@ -237,10 +232,7 @@ export class Collections {
           isTokenApproved = System.checkAuthority(authority.authorization_type.contract_call, from)
         }
       }
-      if(!isTokenApproved) {
-        System.log("from has not authorized transfer");
-        return res;
-      }
+      System.require(isTokenApproved, "from has not authorized transfer", error.error_code.authorization_failure)
     }
     // clear the token approval
     this._state.removeApproved(token_id);
