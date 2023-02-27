@@ -148,7 +148,8 @@ export class Collections {
     // pay mint price token or check creator
     if(Constants.FEE_MINT) {
       let token_pay = new Token(Constants.TOKEN_PAY);
-      let _result = token_pay.transfer(to, this._contractId, Constants.PRICE);
+      let _priceFinal  = SafeMath.mul(Constants.PRICE, args.tokens);
+      let _result = token_pay.transfer(to, this._contractId, _priceFinal);
       System.require(_result, "Failed to pay mint")
     } else {
       System.requireAuthority(authority.authorization_type.contract_call, Constants.OWNER);
